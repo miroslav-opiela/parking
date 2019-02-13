@@ -14,7 +14,7 @@ public class CarPark {
      */
     private List<Car> actualCars;
 
-    private long openingTime;
+    private final long openingTime;
 
     public CarPark(int capacity) {
         this.openingTime = System.currentTimeMillis();
@@ -42,7 +42,6 @@ public class CarPark {
     public void checkIn(String carId, boolean hasCard) {
         int time = this.getCurrentTime();
         Car incomingCar = new Car(carId, time, hasCard);
-
         // prida objekt do listu
         this.actualCars.add(incomingCar);
     }
@@ -54,10 +53,11 @@ public class CarPark {
      * @return vrati to sumu na zaplatenie.
      */
     public double checkOut(String carId) {
-        long currentTime = System.currentTimeMillis();
+        // aktualny cas v minutach
+        int currentTime = getCurrentTime();
         Car outcomingCar = getByCarId(carId);
         // vypocet ceny
-        double price = outcomingCar.calculatePrice();
+        double price = outcomingCar.calculatePrice(currentTime);
         // vyskrtnut zo zoznamu
         deleteCar(outcomingCar);
         return price;
@@ -69,7 +69,7 @@ public class CarPark {
      * @param car auto na odstranienie.
      */
     public void deleteCar(Car car) {
-
+        actualCars.remove(car);
     }
 
     /**

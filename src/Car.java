@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * Reprezentuje jedno zaparkovanie auta na parkovisku.
  */
@@ -18,6 +20,16 @@ public class Car {
      * Ci vlastni mestsku kartu na zlavu.
      */
     private boolean hasCard;
+
+    /**
+     * Cena za hodinu v eurach.
+     */
+    public static final double PRICE_FOR_HOUR = 10;
+
+    /**
+     * Zlava pre drzitela karty.
+     */
+    public static final double CARD_DISCOUNT = 0.5;
 
     /**
      * Konstruktor s default hodnotami.
@@ -63,9 +75,23 @@ public class Car {
         this.hasCard = hasCard;
     }
 
-    public double calculatePrice() {
-        // este treba ziskat cas odchodu a cennik
-        return  0;
+    /**
+     *
+     * @param leavingTime cas v minutach
+     * @return
+     */
+    public double calculatePrice(int leavingTime) {
+        int totalTime = leavingTime - timeIn;
+
+        // ak totalTime / 60 tak uctujem za kazdu zacatu hodinu, lebo celociselne delenie
+        // ak totalTime / 60.0 tak alikvotnu ciastku
+        double price = (totalTime / 60.0) * PRICE_FOR_HOUR;
+        if (hasCard) {
+            price = CARD_DISCOUNT * price;
+        }
+        // zaokruhlime na 2 desatinne miesta
+        price = Math.round(price * 100) / 100.0;
+        return price;
     }
 
     @Override
@@ -77,5 +103,18 @@ public class Car {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return timeIn == car.timeIn &&
+                hasCard == car.hasCard &&
+                Objects.equals(carId, car.carId);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(carId, timeIn, hasCard);
+    }
 }

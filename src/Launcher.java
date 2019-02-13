@@ -16,9 +16,11 @@ public class Launcher {
         // toto mi vypise 2
         System.out.println(parkovisko.getNumberOfCars());
 
-        parkovisko.checkOut("BJ052AA");
+        double price = parkovisko.checkOut("BJ052AA");
         // toto mi vypise 1
         System.out.println(parkovisko.getNumberOfCars());
+
+        System.out.println("Zaplat " + price);
     }
 
 }
