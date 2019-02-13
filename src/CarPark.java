@@ -48,11 +48,53 @@ public class CarPark {
     }
 
     /**
+     * Udalost ked odide auto. Zaplati a je vyskrtnuty zo zoznamu.
+     *
+     * @param carId ecv auta.
+     * @return vrati to sumu na zaplatenie.
+     */
+    public double checkOut(String carId) {
+        long currentTime = System.currentTimeMillis();
+        Car outcomingCar = getByCarId(carId);
+        // vypocet ceny
+        double price = outcomingCar.calculatePrice();
+        // vyskrtnut zo zoznamu
+        deleteCar(outcomingCar);
+        return price;
+    }
+
+    /**
+     * Odstrani auto zo zoznamu.
+     *
+     * @param car auto na odstranienie.
+     */
+    public void deleteCar(Car car) {
+
+    }
+
+    /**
+     * V zozname najde a vrati referenciu na auto podla zadanej ECV.
+     *
+     * @param carId ecv auta.
+     * @return referencia na auto.
+     */
+    public Car getByCarId(String carId) {
+        for (Car car: actualCars) {
+            if (carId.equals(car.getCarId())) {
+                return car;
+            }
+        }
+        // ak som zadane cislo nenasiel nikde v zozname
+        return null;
+    }
+
+    /**
      * Vypocita kolko casu preslo od otvorenia parkoviska.
-     * @return  cas v minutach.
+     *
+     * @return cas v minutach.
      */
     private int getCurrentTime() {
         long currentTime = System.currentTimeMillis();
-        return (int)(currentTime - openingTime) / (1000 * 60);
+        return (int) (currentTime - openingTime) / (1000 * 60);
     }
 }

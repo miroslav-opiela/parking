@@ -62,4 +62,20 @@ public class Car {
     public void setHasCard(boolean hasCard) {
         this.hasCard = hasCard;
     }
+
+    public double calculatePrice() {
+        // este treba ziskat cas odchodu a cennik
+        return  0;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "carId='" + carId + '\'' +
+                ", timeIn=" + timeIn +
+                ", hasCard=" + hasCard +
+                '}';
+    }
+
+
 }
