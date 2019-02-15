@@ -1,9 +1,11 @@
+package sk.elct.java;
+
 import java.util.Objects;
 
 /**
  * Reprezentuje jedno zaparkovanie auta na parkovisku.
  */
-public class Car {
+public class Car implements Comparable<Car>{
 
     /**
      * ECV auta.
@@ -77,7 +79,7 @@ public class Car {
 
     @Override
     public String toString() {
-        return "Car{" +
+        return "sk.elct.java.Car{" +
                 "carId='" + carId + '\'' +
                 ", timeIn=" + timeIn +
                 ", hasCard=" + hasCard +
@@ -97,5 +99,10 @@ public class Car {
     @Override
     public int hashCode() {
         return Objects.hash(carId, timeIn, hasCard);
+    }
+
+    @Override
+    public int compareTo(Car o) {
+        return Integer.compare(this.timeIn, o.timeIn);
     }
 }

@@ -1,4 +1,6 @@
-import java.util.ArrayList;
+package sk.elct.java;
+
+import java.util.Collections;
 import java.util.List;
 
 public class CarPark {
@@ -8,8 +10,12 @@ public class CarPark {
      */
     private CarParkDAO carParkDAO;
 
+    public CarPark() {
+        carParkDAO = new FileCarParkDAO();
+    }
+
     public CarPark(int capacity) {
-        carParkDAO = new ListCarParkDAO(capacity);
+        carParkDAO = new FileCarParkDAO(capacity);
     }
 
     public int getCapacity() {
@@ -30,7 +36,7 @@ public class CarPark {
      *
      * @param carId   ecv auta.
      * @param hasCard ci ma karticku.
-     * @return referencia na novovytvoreny objekt triedy Car. null ak je plne parkovisko
+     * @return referencia na novovytvoreny objekt triedy sk.elct.java.Car. null ak je plne parkovisko
      */
     public Car checkIn(String carId, boolean hasCard) {
         int time = TimeUtils.getElapsedTime(carParkDAO.getOpeningTime());
@@ -49,16 +55,34 @@ public class CarPark {
      *
      * @param carId ecv auta.
      * @return vrati to sumu na zaplatenie.
+     *
      */
-    public double checkOut(String carId) {
+    public double checkOut(String carId) throws CarIdNotExistException {
         // aktualny cas v minutach
         int currentTime = TimeUtils.getElapsedTime(carParkDAO.getOpeningTime());
         Car outcomingCar = carParkDAO.getCarById(carId);
+        // ak auto s takou ECV nie je v zozname
+        if (outcomingCar == null) {
+            throw new CarIdNotExistException(carId);
+        }
         // vypocet ceny
         double price = outcomingCar.calculatePrice(currentTime);
         // vyskrtnut zo zoznamu
         carParkDAO.delete(outcomingCar);
         return price;
+    }
+
+    public List<Car> getAllCarsSortedByTime() {
+        // auta su triedene podla casu
+        List<Car> allCars = carParkDAO.getAllCars();
+        Collections.sort(allCars);
+        return allCars;
+    }
+
+    public List<Car> getAllCarsSortedById() {
+        List<Car> allCars = carParkDAO.getAllCars();
+        Collections.sort(allCars, new SorterByCarId());
+        return allCars;
     }
 
 

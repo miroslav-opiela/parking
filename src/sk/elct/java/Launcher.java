@@ -1,6 +1,14 @@
+package sk.elct.java;
+
+import java.util.Arrays;
+
 public class Launcher {
 
     public static void main(String[] args) {
+        /*int[] a = {8, 6, 2, 1, 3};
+        Arrays.sort(a);
+        System.out.println(Arrays.toString(a));*/
+
         CarPark parkovisko = new CarPark(110);
 
         // toto mi vypise 0

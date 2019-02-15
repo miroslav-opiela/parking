@@ -1,3 +1,5 @@
+package sk.elct.java;
+
 import java.util.List;
 
 public interface CarParkDAO {
