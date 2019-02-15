@@ -16,10 +16,19 @@ public class ListCarParkDAO implements CarParkDAO {
      */
     private List<Car> actualCars;
 
+    /**
+     * Referencny cas otvorenia parkoviska v milisekundach.
+     */
     private final long openingTime;
 
+    /**
+     * Konstruktor
+     *
+     * @param capacity kapacita parkoviska.
+     */
     public ListCarParkDAO(int capacity) {
         this.capacity = capacity;
+        // vytvori sa prazdny zoznam
         this.actualCars = new ArrayList<>();
         openingTime = TimeUtils.currentTime();
     }
@@ -47,7 +56,7 @@ public class ListCarParkDAO implements CarParkDAO {
 
     @Override
     public void add(Car car) {
-       actualCars.add(car);
+        actualCars.add(car);
     }
 
     @Override

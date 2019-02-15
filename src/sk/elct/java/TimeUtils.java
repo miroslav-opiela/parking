@@ -1,5 +1,8 @@
 package sk.elct.java;
 
+/**
+ * Pomocne staticke metody pre pracu s casom.
+ */
 public class TimeUtils {
 
     /**

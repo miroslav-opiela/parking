@@ -10,6 +10,7 @@ public class MenuLauncher {
         int capacity = sc.nextInt();
         CarPark carPark;
         if (capacity == 0) {
+            // v pripade ListCarParkDAO taku moznost nemame.
             carPark = new CarPark();
         } else {
             carPark = new CarPark(capacity);

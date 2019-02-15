@@ -3,21 +3,35 @@ package sk.elct.java;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Trieda reprezentuje parkovisko.
+ */
 public class CarPark {
 
     /**
-     * data access object na manipulaciu s datami
+     * Data access object na manipulaciu s datami
      */
     private CarParkDAO carParkDAO;
 
+    /**
+     * V tomto pripade sa pouziju aktualne data.
+     */
     public CarPark() {
         carParkDAO = new FileCarParkDAO();
     }
 
+    /**
+     * Vytvara sa nove parkovisko so zadanou kapacitou.
+     *
+     * @param capacity kapacita parkoviska.
+     */
     public CarPark(int capacity) {
         carParkDAO = new FileCarParkDAO(capacity);
     }
 
+    /**
+     * Zisti celkovu kapacitu parkoviska.
+     */
     public int getCapacity() {
         return carParkDAO.getCapacity();
     }
@@ -36,7 +50,7 @@ public class CarPark {
      *
      * @param carId   ecv auta.
      * @param hasCard ci ma karticku.
-     * @return referencia na novovytvoreny objekt triedy sk.elct.java.Car. null ak je plne parkovisko
+     * @return referencia na novovytvoreny objekt triedy Car. null ak je plne parkovisko
      */
     public Car checkIn(String carId, boolean hasCard) {
         int time = TimeUtils.getElapsedTime(carParkDAO.getOpeningTime());
@@ -55,7 +69,7 @@ public class CarPark {
      *
      * @param carId ecv auta.
      * @return vrati to sumu na zaplatenie.
-     *
+     * @throws CarIdNotExistException vynimka ak auto so zadanou ECV nie je v systeme.
      */
     public double checkOut(String carId) throws CarIdNotExistException {
         // aktualny cas v minutach
@@ -72,6 +86,11 @@ public class CarPark {
         return price;
     }
 
+    /**
+     * Vrati zoznam aut zotriedenych podla casu prichodu.
+     *
+     * @return zoznam vsetkych aut.
+     */
     public List<Car> getAllCarsSortedByTime() {
         // auta su triedene podla casu
         List<Car> allCars = carParkDAO.getAllCars();
@@ -79,6 +98,12 @@ public class CarPark {
         return allCars;
     }
 
+
+    /**
+     * Vrati zoznam aut zotriedenych podla ECV.
+     *
+     * @return zoznam vsetkych aut.
+     */
     public List<Car> getAllCarsSortedById() {
         List<Car> allCars = carParkDAO.getAllCars();
         Collections.sort(allCars, new SorterByCarId());

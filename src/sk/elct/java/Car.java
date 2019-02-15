@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Reprezentuje jedno zaparkovanie auta na parkovisku.
  */
-public class Car implements Comparable<Car>{
+public class Car implements Comparable<Car> {
 
     /**
      * ECV auta.
@@ -60,8 +60,10 @@ public class Car implements Comparable<Car>{
 
 
     /**
+     * Vypocita sumu za parkovanie
+     *
      * @param leavingTime cas v minutach
-     * @return
+     * @return suma v eurach zaokruhlena na centy.
      */
     public double calculatePrice(int leavingTime) {
         int totalTime = leavingTime - timeIn;
@@ -103,6 +105,7 @@ public class Car implements Comparable<Car>{
 
     @Override
     public int compareTo(Car o) {
+        // prirodzene sa porovnavaju dva objekty podla casu prichodu
         return Integer.compare(this.timeIn, o.timeIn);
     }
 }

@@ -37,12 +37,15 @@ public class FileCarParkDAO implements CarParkDAO {
 
     @Override
     public void delete(Car carToRemove) {
+        // precitame zo suboru vsetky polozky
         int capacity = getCapacity();
         long time = getOpeningTime();
         List<Car> allCars = getAllCars();
 
+        // v zozname vymazeme auto
         allCars.remove(carToRemove);
 
+        // zapiseme aktualny stav do suboru
         try (PrintWriter pw = new PrintWriter(FILE)) {
             pw.println(capacity);
             pw.println(time);
@@ -94,6 +97,7 @@ public class FileCarParkDAO implements CarParkDAO {
             sc.nextLine();
             while (sc.hasNextLine()) {
                 String carInFile = sc.nextLine();
+                // riadok zo suboru sa prevedie na objekt triedy Car
                 Car car = carFromString(carInFile);
                 cars.add(car);
             }
@@ -105,6 +109,8 @@ public class FileCarParkDAO implements CarParkDAO {
 
     /**
      * Zo stringu vyrobi novy objekt.
+     *
+     * @param s string v tvare ecv;cas;karta
      */
     private Car carFromString(String s) {
         Scanner sc = new Scanner(s);

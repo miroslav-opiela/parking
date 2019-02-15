@@ -1,11 +1,15 @@
 package sk.elct.java;
 
+/**
+ * Trieda reprezentujuca vynimku ak neexistuje zadane ECV na parkovisku.
+ */
 public class CarIdNotExistException extends RuntimeException {
 
     public CarIdNotExistException() {
     }
 
     public CarIdNotExistException(String message) {
+        // vola sa konstruktor rodicovskej triedy RuntimeException
         super(message);
     }
 
