@@ -32,13 +32,6 @@ public class Car {
     public static final double CARD_DISCOUNT = 0.5;
 
     /**
-     * Konstruktor s default hodnotami.
-     */
-    public Car() {
-
-    }
-
-    /**
      * Konstruktor ktory nastavi premenne podla zadanych hodnot.
      *
      * @param carId   ecv auta.
@@ -55,28 +48,16 @@ public class Car {
         return carId;
     }
 
-    public void setCarId(String carId) {
-        this.carId = carId;
-    }
-
     public int getTimeIn() {
         return timeIn;
-    }
-
-    public void setTimeIn(int timeIn) {
-        this.timeIn = timeIn;
     }
 
     public boolean isHasCard() {
         return hasCard;
     }
 
-    public void setHasCard(boolean hasCard) {
-        this.hasCard = hasCard;
-    }
 
     /**
-     *
      * @param leavingTime cas v minutach
      * @return
      */

@@ -4,28 +4,16 @@ import java.util.List;
 public class CarPark {
 
     /**
-     * Celkova kapacita parkoviska.
-     * Spolu aj volne aj obsadene miesta.
+     * data access object na manipulaciu s datami
      */
-    private final int capacity;
-
-    /**
-     * Zoznam aut, ktore tam aktualne parkuju.
-     */
-    private List<Car> actualCars;
-
-    private final long openingTime;
+    private CarParkDAO carParkDAO;
 
     public CarPark(int capacity) {
-        this.openingTime = System.currentTimeMillis();
-        this.capacity = capacity;
-        this.actualCars = new ArrayList<>();
-        System.out.println("vyrobil som parkovisko s poctom obsadenych miest "
-                + this.actualCars.size() + " s celkovou kapacitou " + this.capacity);
+        carParkDAO = new ListCarParkDAO(capacity);
     }
 
     public int getCapacity() {
-        return capacity;
+        return carParkDAO.getCapacity();
     }
 
     /**
@@ -34,7 +22,7 @@ public class CarPark {
      * @return pocet aut.
      */
     public int getNumberOfCars() {
-        return actualCars.size();
+        return carParkDAO.getAllCars().size();
     }
 
     /**
@@ -45,24 +33,15 @@ public class CarPark {
      * @return referencia na novovytvoreny objekt triedy Car. null ak je plne parkovisko
      */
     public Car checkIn(String carId, boolean hasCard) {
-        int time = this.getCurrentTime();
+        int time = TimeUtils.getElapsedTime(carParkDAO.getOpeningTime());
         Car incomingCar = new Car(carId, time, hasCard);
-        if (isFull()) {
+        if (carParkDAO.isFull()) {
             // ak je plne parkovisko, nepridavam do zoznamu
             return null;
         }
         // prida objekt do listu
-        this.actualCars.add(incomingCar);
+        carParkDAO.add(incomingCar);
         return incomingCar;
-    }
-
-    /**
-     * Overi ci je plne parkovisko.
-     *
-     * @return true ak uz nie je volne miesto.
-     */
-    public boolean isFull() {
-        return actualCars.size() >= capacity;
     }
 
     /**
@@ -73,47 +52,14 @@ public class CarPark {
      */
     public double checkOut(String carId) {
         // aktualny cas v minutach
-        int currentTime = getCurrentTime();
-        Car outcomingCar = getByCarId(carId);
+        int currentTime = TimeUtils.getElapsedTime(carParkDAO.getOpeningTime());
+        Car outcomingCar = carParkDAO.getCarById(carId);
         // vypocet ceny
         double price = outcomingCar.calculatePrice(currentTime);
         // vyskrtnut zo zoznamu
-        deleteCar(outcomingCar);
+        carParkDAO.delete(outcomingCar);
         return price;
     }
 
-    /**
-     * Odstrani auto zo zoznamu.
-     *
-     * @param car auto na odstranienie.
-     */
-    public void deleteCar(Car car) {
-        actualCars.remove(car);
-    }
 
-    /**
-     * V zozname najde a vrati referenciu na auto podla zadanej ECV.
-     *
-     * @param carId ecv auta.
-     * @return referencia na auto.
-     */
-    public Car getByCarId(String carId) {
-        for (Car car : actualCars) {
-            if (carId.equals(car.getCarId())) {
-                return car;
-            }
-        }
-        // ak som zadane cislo nenasiel nikde v zozname
-        return null;
-    }
-
-    /**
-     * Vypocita kolko casu preslo od otvorenia parkoviska.
-     *
-     * @return cas v minutach.
-     */
-    private int getCurrentTime() {
-        long currentTime = System.currentTimeMillis();
-        return (int) (currentTime - openingTime) / (1000 * 60);
-    }
 }
