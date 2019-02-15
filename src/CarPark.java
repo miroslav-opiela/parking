@@ -7,7 +7,7 @@ public class CarPark {
      * Celkova kapacita parkoviska.
      * Spolu aj volne aj obsadene miesta.
      */
-    private int capacity;
+    private final int capacity;
 
     /**
      * Zoznam aut, ktore tam aktualne parkuju.
@@ -24,6 +24,10 @@ public class CarPark {
                 + this.actualCars.size() + " s celkovou kapacitou " + this.capacity);
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
     /**
      * Vrati to pocet aut, ktore v dany moment parkuju na parkovisku.
      *
@@ -38,12 +42,27 @@ public class CarPark {
      *
      * @param carId   ecv auta.
      * @param hasCard ci ma karticku.
+     * @return referencia na novovytvoreny objekt triedy Car. null ak je plne parkovisko
      */
-    public void checkIn(String carId, boolean hasCard) {
+    public Car checkIn(String carId, boolean hasCard) {
         int time = this.getCurrentTime();
         Car incomingCar = new Car(carId, time, hasCard);
+        if (isFull()) {
+            // ak je plne parkovisko, nepridavam do zoznamu
+            return null;
+        }
         // prida objekt do listu
         this.actualCars.add(incomingCar);
+        return incomingCar;
+    }
+
+    /**
+     * Overi ci je plne parkovisko.
+     *
+     * @return true ak uz nie je volne miesto.
+     */
+    public boolean isFull() {
+        return actualCars.size() >= capacity;
     }
 
     /**
@@ -79,7 +98,7 @@ public class CarPark {
      * @return referencia na auto.
      */
     public Car getByCarId(String carId) {
-        for (Car car: actualCars) {
+        for (Car car : actualCars) {
             if (carId.equals(car.getCarId())) {
                 return car;
             }
